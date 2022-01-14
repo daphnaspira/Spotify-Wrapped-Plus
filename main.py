@@ -6,13 +6,17 @@ def main():
 
     months = df['Month-Year'].unique()
 
-    monthly_song_freqs_df = f.song_play_frequencies(df, months, 'Month-Year')
+    monthly_song_freqs_df = f.play_frequencies(df, months, 'Month-Year', 'song')
+    monthly_artist_freqs_df = f.play_frequencies(df, months, 'Month-Year', 'artist')
 
-    top_songs_df = f.top_songs_per_month(df, months)
+    top_songs_df = f.top_per_month(df, months, 'song')
+    top_artists_df = f.top_per_month(df, months, 'artist')
 
-    f.print_top_songs_per_month(df, months)
+    f.print_top_per_month(df, months, 'song')
+    f.print_top_per_month(df, months, 'artist')    
 
-    f.plot_top_songs_over_time(top_songs_df, monthly_song_freqs_df, months, 'Month-Year')
+    f.plot_top_over_time(top_songs_df, monthly_song_freqs_df, months, 'Month-Year', 'song')
+    f.plot_top_over_time(top_artists_df, monthly_artist_freqs_df, months, 'Month-Year', 'artist')
 
 if __name__ == "__main__":
     main()
