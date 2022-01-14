@@ -33,7 +33,7 @@ def song_play_frequencies(df, dates, date_column_name):
     song_freqs_df.reset_index(drop=True)
     return song_freqs_df
 
-def merge_songs(song_to_merge, original_song):
+def merge_songs(df, song_to_merge, original_song):
     """
     song_to_merge = (str) the alternate name for the song (will be replaced)
     original song = (str) the name of the song that you want to display (what to replace with)
@@ -47,7 +47,7 @@ def merge_songs(song_to_merge, original_song):
 def print_top_songs_per_month(df, months, n=5):
     """
     df = (dataframe) the name of the dataframe with the listening history
-    months = (list) the range of months to use
+    months = (list) the range of months-year pairs to use
     n (optional) = (int) the number of top songs to display for each month. default is set to 5.
     
     Prints out the top n songs for each month with the name of the song, name of the artist, and the number of times the song was played in that month.
@@ -59,10 +59,10 @@ def print_top_songs_per_month(df, months, n=5):
         print(freq.head(n))
         print()
         
-def top_songs_per_month(df, months, n=5):
+def top_songs_per_month(df, months, n=1):
     """
     df = (dataframe) the name of the dataframe with the listening history
-    months = (list) the range of months to use
+    months = (list) the range of month-year pairs to use
     n (optional) = (int) the number of top songs to display for each month. default is set to 5.
     Returns a dataframe containing the top n songs for each month with the name of the song, name of the artist, number of times the song was played in the month, and month.
     """
@@ -84,7 +84,7 @@ def plot_top_songs_over_time(top_songs_df, monthly_song_freqs_df, dates, date_co
         all_plays = monthly_song_freqs_df[monthly_song_freqs_df['trackName']==song]
         all_plays_of_top_songs_df = all_plays_of_top_songs_df.append(all_plays)
     
-    plt.figure(figsize=(20,15))
+    plt.figure(figsize=(15,10))
     pd.plotting.register_matplotlib_converters()
 
     for song in top_songs:
