@@ -74,3 +74,32 @@ def top_songs_per_month(df, months, n=5):
         top_n['Month-Year'] = month
         top_songs_df = top_songs_df.append(top_n)
     return top_songs_df
+
+def plot_top_songs_over_time(top_songs_df, monthly_song_freqs_df, dates, date_column_name):
+    
+    top_songs = top_songs_df['trackName'].unique()
+    
+    all_plays_of_top_songs_df = pd.DataFrame()
+    for song in top_songs:
+        all_plays = monthly_song_freqs_df[monthly_song_freqs_df['trackName']==song]
+        all_plays_of_top_songs_df = all_plays_of_top_songs_df.append(all_plays)
+    
+    plt.figure(figsize=(20,15))
+    pd.plotting.register_matplotlib_converters()
+
+    for song in top_songs:
+        one_song_freqs = all_plays_of_top_songs_df[all_plays_of_top_songs_df['trackName']==song]
+        freq_list = []
+        for date in dates:
+            if (one_song_freqs[date_column_name]==date).any():
+                that_day = one_song_freqs[one_song_freqs[date_column_name]==date]
+                freq_list.append(int(sum(that_day['Number of Plays'])))
+            else:
+                freq_list.append(0)
+        dates_and_freqs_df = pd.DataFrame(data=freq_list, index=dates)
+        dates_and_freqs_df.index = dates_and_freqs_df.index.to_timestamp()
+        plt.plot(dates_and_freqs_df, label=song)
+        plt.legend()
+     
+    plt.savefig('top_song_per_month_over_time.png')
+    plt.show()
