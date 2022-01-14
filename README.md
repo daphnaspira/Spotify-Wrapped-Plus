@@ -24,3 +24,6 @@ Requires that the range of months in your listening history exist as a list/arra
 ### To get a dataframe with your top songs each month
 `top_songs_per_month()` returns a dataframe containing your top n song names, artists, number of songs, and month.
 Requires that the range of months in your listening history exist as a list/array to pass into the function (same as for song_play_frequencies())
+
+### To get a plot showing the play frequency each month for each song that was your top played song at least one month
+`plot_top_songs_over_time()` returns an overlaid line plot with one line for each song over the time period range that you specify. x-axis is the time period and y-axis is number of times that song was played in the time period
