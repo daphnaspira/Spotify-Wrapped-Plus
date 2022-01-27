@@ -1,22 +1,22 @@
-import pandas as pd
-from datetime import datetime
+import functions as f
 
 def main():
-    data = pd.read_json("./StreamingHistory0.json")
-    data["date"] = [n[:10] for n in data["endTime"]]
-    data["month"] = [datetime.strptime(date[:10], "%Y-%m-%d").month for date in data["endTime"]]
+    df = f.get_listening_history('MyData/StreamingHistory0.json')
+    df = f.merge_songs(df, "MONTERO (Call Me By Your Name) - SATAN'S EXTENDED VERSION",'MONTERO (Call Me By Your Name)')
 
-    # data.to_csv("data.csv")
+    months = df['Month-Year'].unique()
 
-    for month in range(1, 13):
-        months_songs = data[data["month"] == month]
-        freq = months_songs["trackName"].value_counts()
-        top = freq.keys()[0]
-        print(top)
-        print(freq.head())
+    monthly_song_freqs_df = f.play_frequencies(df, months, 'Month-Year', 'song')
+    monthly_artist_freqs_df = f.play_frequencies(df, months, 'Month-Year', 'artist')
 
-    # for day in pd.date_range(start=params["start"],end=params["end"])
+    top_songs_df = f.top_per_month(df, months, 'song')
+    top_artists_df = f.top_per_month(df, months, 'artist')
 
+    f.print_top_per_month(df, months, 'song')
+    f.print_top_per_month(df, months, 'artist')    
+
+    f.plot_top_over_time(top_songs_df, monthly_song_freqs_df, months, 'Month-Year', 'song')
+    f.plot_top_over_time(top_artists_df, monthly_artist_freqs_df, months, 'Month-Year', 'artist')
 
 if __name__ == "__main__":
     main()
